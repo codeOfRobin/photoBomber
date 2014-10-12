@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "photosViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -17,6 +17,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.window.backgroundColor = [UIColor whiteColor];
+    photosViewController *photosVC=[[photosViewController alloc] init];
+    UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:photosVC];
+    
+    UINavigationBar *navigationBar=navController.navigationBar;
+    navigationBar.barTintColor=[UIColor colorWithRed:242.0/255 green:122.0/255 blue:87.0/255 alpha:0.5];
+    navigationBar.tintColor=[UIColor whiteColor];
+
+    self.window.rootViewController=navController;
+    [self.window makeKeyAndVisible];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     return YES;
 }
 
