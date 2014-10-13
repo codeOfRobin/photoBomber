@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "photosViewController.h"
+#import <SimpleAuth/SimpleAuth.h>
 @interface AppDelegate ()
 
 @end
@@ -30,6 +31,12 @@
     self.window.rootViewController=navController;
     [self.window makeKeyAndVisible];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    SimpleAuth.configuration[@"instagram"] = @{
+                                               @"client_id" : @"f520867d89684327802b4c5b87304fb2",
+                                               SimpleAuthRedirectURIKey : @"photobombers://auth/instagram"
+                                               };
+    [SimpleAuth authorize:@"instagram" completion:^(id responseObject, NSError *error) {}];
     return YES;
 }
 

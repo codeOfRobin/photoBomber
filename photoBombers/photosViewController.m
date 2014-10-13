@@ -7,9 +7,12 @@
 //
 
 #import "photosViewController.h"
-
+#import <SimpleAuth/SimpleAuth.h>
 @interface photosViewController ()
-
+{
+    NSURL *location2;
+}
+@property (nonatomic) NSString *accessToken;
 @end
 
 @implementation photosViewController
@@ -36,6 +39,12 @@
     return cell;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+
+}
 
 -(void)viewDidLoad
 {
@@ -44,6 +53,25 @@
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"photo"];
     [self setTitle:@"Photo Bombers"];
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,nil]];
+    
+    //code to move
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    self.accessToken=[userDefaults objectForKey:@"accessToken"];
+    if (self.accessToken==nil)
+    {
+        [SimpleAuth authorize:@"instagram" completion:^(NSDictionary *responseObject, NSError *error)
+         {
+             NSString *accessToken=responseObject[@"credentials"][@"token"];
+             [userDefaults setObject:accessToken forKey:@"accessToken"];
+             [userDefaults synchronize];
+         }];
+    }
+    else
+    {
+        NSLog(@"signed in");
+    }
+
+    
 
 }
 @end
