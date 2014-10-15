@@ -17,7 +17,7 @@
 
 @implementation photosViewController
 
--(instancetype) init
+-(instancetype) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
     layout.itemSize=CGSizeMake(106, 106);
@@ -41,7 +41,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear:NO];
     
 
 }
@@ -69,6 +69,18 @@
     else
     {
         NSLog(@"signed in");
+        NSURLSession *session=[NSURLSession sharedSession];
+        NSURL *url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"https://api.instagram.com/v1/tags/snow/media/recent?access_token=%@",[userDefaults objectForKey:@"accessToken"]]];
+        NSURLRequest *request=[[NSURLRequest alloc] initWithURL:url];
+        NSURLSessionDownloadTask *task=[session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+            
+            NSData *data=[[NSData alloc]initWithContentsOfURL:location ];
+            NSDictionary *responseDictionary=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            NSArray *photos=[responseDictionary valueForKeyPath:@"data.images.standard_resolution.url"];
+            NSLog(@"%@",photos);
+        }];
+        [task resume];
+        
     }
 
     
